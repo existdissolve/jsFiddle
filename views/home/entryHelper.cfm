@@ -58,14 +58,10 @@
      */
     function prepareFiddle( inputs ) {
         var vals = [],
-            tabs = [],
             iframe = '';
         inputs.each(function() {
              if( this.type=='checkbox' ) {
-                if( this.checked ) {
-                    // add values to array
-                    tabs.push( this.value );
-                }
+                vals.push( this.checked ? true : false );
             }
             else {
                 // add values to array
@@ -77,7 +73,7 @@
             return false;
         }
         // create double-mustache syntax
-        iframe += '{{fiddle style="height:{1};width:{2};" src="{0}embedded/{3}"}}'.format( vals[0], vals[1], vals[2], tabs.join( ',' ) );
+        iframe += '<fiddle height="{2}" width="{3}" src="{0}" js="{4}" resources="{5}" css="{6}" html="{7}" result="{8}">jsFiddle - {1}</fiddle>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
         // insert into editor
         sendEditorText ( iframe );
     }
@@ -134,6 +130,7 @@
                                 '<td>',
                                     '<label>Height</label>',
                                     '<input type="hidden" name="fiddle_url" value="' + fiddle.url + '" />',
+                                    '<input type="hidden" name="fiddle_title" value="' + fiddle.title + '" />',
                                     '<input type="text" name="fiddle_height" value="#prc.settings.height#" />',
                                 '</td>',
                                 '<td>',

@@ -22,11 +22,11 @@ component extends="coldbox.system.Interceptor"{
 	}
 	
 	/**
-     * Intercepts on cb_onContentRendering to replace custom double-musta
+     * Intercepts on cb_onContentRendering to replace custom tag syntax
      */
 	function cb_onContentRendering( required any event, required struct interceptData ) {
-		// regex for fiddle mustache syntax
-		var regex 	= "\{\{fiddle[^\}]*\}\}";
+		// regex for fiddle tag syntax
+		var regex 	= "<fiddle\b[^>]*>(.*?)</fiddle>";
 		// get string builder
 		var builder = arguments.interceptData.builder;
 		// find regex matches 
@@ -34,13 +34,37 @@ component extends="coldbox.system.Interceptor"{
 		var replacer = "";
 		// loop over all matches
 		for( var match in targets ) {
-			// replace mustache syntax with tags
-			replacer = replace( match, "{{fiddle", "<iframe " );
-			replacer = replace( replacer,"}}","></iframe>", "one" );
-			replacer = replace( replacer,"&##34;",'"',"all" );
-			replacer = replace( replacer,"&##39;","'","all" );
-			replacer = replace( replacer,"&quot;","'","all" );
-			// find the mustache syntax position
+			// get attributes
+			var attributes = reMatch( '[a-z]+=\"[a-zA-Z0-9\.\?\&/:%]+\"', match );
+			var urlArgs = "";
+			replacer = "";
+			replacer &= "<iframe ";
+			// loop over attributes and deal with them as needed
+			for( var attribute in attributes ) {
+				switch( listGetAt( attribute, 1, "=" ) ) {
+					case "css":
+					case "js":
+					case "html":
+					case "resources":
+					case "result":
+						if( listGetAt( attribute, 2, "=" )=='"true"' ) {
+							urlArgs = listAppend( urlArgs, listGetAt( attribute, 1, "=" ) );
+						}
+						break;
+					case "height":
+					case "width":
+						replacer &= " #listGetAt( attribute, 1, '=' )#=#listGetAt( attribute, 2, '=' )#";	
+						break;
+					case "src":
+						var theurl = replace( listGetAt( attribute, 2, "=" ), '"', '', 'all' );
+							theurl &= right( theurl, 1 )=="/" ? "embedded/" : "/embedded/";
+							theurl &= urlArgs;
+						replacer &= " #listGetAt( attribute, 1, '=' )#=""#theurl#""";
+						break;
+				}
+			}
+			replacer &= "></iframe>";
+			// find the match syntax position
 			var pos = builder.indexOf( match );
 			// get the length
 			var len = len( match );
@@ -49,7 +73,7 @@ component extends="coldbox.system.Interceptor"{
 				builder.replace( javaCast( "int", pos ), JavaCast( "int", pos+len ), replacer );
 				// look again
 				pos = builder.indexOf( match, javaCast( "int", pos ) );
-			}
+			}			
 		}
 	}
 }

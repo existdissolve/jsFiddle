@@ -1,0 +1,9 @@
+fiddle {
+    border: dotted 2px #333;
+    color: #fafafa;
+    border-radius: 4px;
+    padding:10px;
+    background-color:#3D6E99;
+    display:block;
+    font-weight:bold;
+}

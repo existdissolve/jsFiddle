@@ -41,6 +41,7 @@
 							<p>Fiddle doesn't belong to one of your configured users? No problem, just enter the URL for the fiddle below!</p>
                             <div id="fiddlebyurl">
                                 #html.textField(name="url", label="Fiddle URL:", class="textfield width98", required="required")#
+                                #html.textField(name="url", label="Fiddle Title:", class="textfield width98", required="required")#
                                 #html.textField(name="height", label="Fiddle Height:", value="#prc.settings.height#", class="textfield width98", required="required")#
                                 #html.textField(name="width", label="Fiddle Width:", value="#prc.settings.width#", class="textfield width98", required="required")#
             					<label>Tabs to Include</label>
