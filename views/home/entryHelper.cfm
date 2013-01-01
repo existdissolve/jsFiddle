@@ -35,13 +35,6 @@
     $( '##userselect' ).change( function() {
         $( '##userfiddles' ).show( 100 );
         getUserFiddles( this.value );
-    })
-   
-    // setup listner for insert action
-    $( '.insert-fiddle' ).live( 'click', function() {
-        // get all inputs
-        var inputs = $( this ).parent().parent().find( 'input' );
-        prepareFiddle( inputs );
     });
     
     /*
@@ -162,6 +155,12 @@
         $( '.config-fiddle' ).click( function() {
             $( this ).parent().next().slideToggle( 300 );
         })
+        // setup listner for insert action
+        $( '.insert-fiddle' ).click( function() {
+            // get all inputs
+            var inputs = $( this ).parent().parent().find( 'input' );
+            prepareFiddle( inputs );
+        });
     }
     
     function sendEditorText(text){
