@@ -164,7 +164,7 @@
     }
     
     function sendEditorText(text){
-    	$("###rc.editorName#").ckeditorGet().insertHtml( text );
+    	$("###rc.editorName#").ckeditorGet().insertElement( CKEDITOR.dom.element.createFromHtml( text ) );
     	closeRemoteModal();
     }
 </script>
