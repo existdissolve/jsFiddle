@@ -58,14 +58,21 @@
 					#html.hiddenField(name="users", value="#prc.settings.users#")#
 					<label>jsFiddle Users:</label>
                    	<input type="text" class="textfield" name="jsfiddleuser" value="" />
-                    <img src="#event.getModuleRoot('jsFiddle')#/includes/add.png" class="add_jsfiddleuser" />
+                    <div id="add-holder" style="display:inline;">
+                    	<img src="#event.getModuleRoot('jsFiddle')#/includes/add.png" class="add_jsfiddleuser" />
+                    </div>
                     <ul class="jsfiddleusers">
                     <cfif listLen( prc.settings.users )>
 						<cfloop list="#prc.settings.users#" index="user">
 							<li class="jsfiddleuser"><img height="16" src="#event.getModuleRoot('jsFiddle')#/includes/delete.png" class="delete_jsfiddleuser" /><span>#user#</span></li>
 						</cfloop>
 					</cfif>
-				</ul>
+					</ul>
+                     <cfif listLen( prc.settings.users )>
+					 	<div class="holder">
+                   			#html.button(value="Update Cached Fiddles",class="button2",id="updatefiddles",title="Update cached fiddles for all users")#
+					 	</div>
+					 </cfif>
 				</fieldset>
 
 				<!--- Submit --->

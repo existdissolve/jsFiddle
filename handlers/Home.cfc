@@ -9,6 +9,7 @@ component{
 		// Exit handler
 		prc.xehSave = cb.buildModuleLink("jsFiddle","home.saveSettings");
 		prc.xehCheckLink = cb.buildModuleLink("jsFiddle","home.checkUserIsReal");
+		prc.xehForceUpdateUserFiddles = cb.buildModuleLink("jsFiddle","home.forceUpdateUserFiddles");
 		prc.tabModules_jsFiddle = true;
 		// settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
@@ -17,7 +18,7 @@ component{
 	}
 
 	function saveSettings(event,rc,prc){
-		// Get compressor settings
+		// Get jsfiddle settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
 
 		// iterate over settings
@@ -39,6 +40,13 @@ component{
 		getPlugin("MessageBox").info("Settings Saved & Updated!");
 		// Relocate via CB Helper
 		cb.setNextModuleEvent("jsFiddle","home.settings");
+	}
+
+	function forceUpdateUserFiddles(event,rc,prc) {
+		// Get jsfiddle settings
+		prc.settings = getModuleSettings( "jsFiddle" ).settings;
+		jsFiddle.updateUserFiddles( users=listToArray( prc.settings.users ), forceUpdate=true );
+        return 'yes';
 	}
 
 	function getFiddles(event,rc,prc){

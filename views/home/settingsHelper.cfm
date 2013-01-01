@@ -26,7 +26,22 @@ $(document).ready(function() {
     $( 'img.delete_jsfiddleuser' ).live( 'click', function(){
         removeUser( $( this ).next()[0].innerHTML );
     });
-    
+    $( 'button.##updatefiddles' ).click( function() {
+        var me = $( this ),
+            parent = me.parent();
+        $.ajax({
+            url: '#prc.xehForceUpdateUserFiddles#',
+            beforeSend: function( jqXHR, settings ) {
+                me.hide();
+                parent.append( '<div id="loading-spot">Refreshing... <img id="loading-img" src="#event.getModuleRoot('jsFiddle')#/includes/loading.gif" /></div>');
+            },
+            success: function( data ) {
+                alert( 'User fiddles have been refreshed!' );
+                $( '##loading-spot' ).remove();
+                me.show();
+            }
+        })
+    })
     function userExists( user, users ) {
         for( var i in users ) {
             var targetuser = users[i];
@@ -38,7 +53,9 @@ $(document).ready(function() {
     }
     
     function addUser() {
-        var fld = $( 'input[name=jsfiddleuser]' )[0],
+        var me = $( this ),
+            parent = me.parent(),
+            fld = $( 'input[name=jsfiddleuser]' )[0],
             hiddenFld = $( 'input[name=users]' )[0],
             users = hiddenFld.value != '' ? hiddenFld.value.split( ',' ) : [],
             list = $( 'ul.jsfiddleusers' ),
@@ -49,8 +66,14 @@ $(document).ready(function() {
             if( !userExists( fld.value, users ) ) {
                 // now check that user has fiddles for jsfiddle.net
                 $.ajax({
-                    url: '#prc.xehCheckLink#?user=' + fld.value, 
-                    success: function( data ) {                                
+                    url: '#prc.xehCheckLink#?user=' + fld.value,
+                    beforeSend: function( jqXHR, settings ) {
+                        me.hide();
+                        parent.append( '<div id="loading-spot">Validating user... <img id="loading-img" src="#event.getModuleRoot('jsFiddle')#/includes/loading.gif" /></div>');
+                    }, 
+                    success: function( data ) {  
+                        $( '##loading-spot' ).remove();
+                        me.show();                              
                         if( jQuery.trim( data )=='yes' ) {
                             // add user to array
                             users.push( fld.value );           

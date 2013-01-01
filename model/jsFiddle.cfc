@@ -89,6 +89,34 @@ component accessors="true"{
 		}
 	}
 	
+	public void function updateUserFiddles( required array users, required boolean forceUpdate=false ) {
+		var user = '';
+		// over over saved users
+		for( user in arguments.users ) {
+			// get all settings for saved user
+			var userFiddles = settingService.findWhere( criteria={ name="cbox-jsfiddle-#user#" } );
+			// if user exists
+			if( !isNull( userFiddles ) ) {
+				// get array of fiddles
+				var userValues = deserializeJSON( userFiddles.getValue() );
+				// check if expire date is defined, that it's a date, and that it's past the expiry date; if so, re-get user fiddles
+				if( ( structKeyExists( uservalues, "expires" ) && isDate( uservalues.expires ) && datediff( 'd', uservalues.expires, now() ) > settings.cachetime ) || arguments.forceUpdate ) {
+					// get fiddles from jsfiddle.net
+					var fiddles = getUserFiddles( user ).toString();
+					var value = serializeJSON({
+						"fiddles"=fiddles,
+						"expires"=dateFormat( now(), 'yyyy-mm-dd' )
+					});
+					// if we have a valid response from jsfiddle.net, save the user setting
+					if( isJSON( fiddles ) ) {
+						userFiddles.setValue( value );
+						settingService.save( userFiddles );
+					}
+				}
+			}
+		}
+	}
+	
 	/**
      * Deletes settings for users that have been deleted from main jsfiddle setting
      * @users {Array} - array of users to cleanup

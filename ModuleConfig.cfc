@@ -65,6 +65,9 @@ component {
 		if( !isNull(setting) ){
 			// override settings from contentbox custom setting
 			controller.getSetting("modules").jsFiddle.settings = deserializeJSON( setting.getvalue() );
+			// run process for updating user fiddles, if expired
+			var jsFiddleService = controller.getWireBox().getInstance( "jsFiddle@jsFiddle" );
+			jsFiddleService.updateUserFiddles( listToArray( controller.getSetting("modules").jsFiddle.settings.users ) );
 		}
 	}
 
