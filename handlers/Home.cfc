@@ -8,6 +8,7 @@ component{
 	function settings(event,rc,prc){
 		// Exit handler
 		prc.xehSave = cb.buildModuleLink("jsFiddle","home.saveSettings");
+		prc.xehCheckLink = cb.buildModuleLink("jsFiddle","home.checkUserIsReal");
 		prc.tabModules_jsFiddle = true;
 		// settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
@@ -32,7 +33,8 @@ component{
 		var setting = settingService.findWhere(criteria=args);
 		setting.setValue( serializeJSON( prc.settings ) );
 		settingService.save( setting );
-
+		jsFiddle.saveUsers( users=listToArray( prc.settings.users ) );
+		jsFiddle.cleanupUsers( listToArray( prc.settings.users ) );
 		// Messagebox
 		getPlugin("MessageBox").info("Settings Saved & Updated!");
 		// Relocate via CB Helper
@@ -43,10 +45,20 @@ component{
 		event.paramValue("user","");
 		return jsFiddle.getFiddles(user=rc.user);
 	}
-
+	
+	function checkUserIsReal( event, rc, prc ) {
+		event.paramValue("user","");
+		var fiddles = jsFiddle.getUserFiddles( user=rc.user );
+		var mydata = isJSON( fiddles ) ? "yes" : "no";
+		if( event.isAjax() ) {
+			return mydata;
+		}
+	}
+	
 	function entry(event,rc,prc){
 		// settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
+		prc.settings.fiddles = jsFiddle.getAllUserFiddles();
 		prc.xehEmbedCode = cb.buildModuleLink("jsFiddle","home.getFiddles");
 
 		// view

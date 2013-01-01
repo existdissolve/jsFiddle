@@ -26,8 +26,10 @@ component {
 		settings = {
 			// Developer Key
 			"width" = "100%",
-			"height"= "300",
-			"users"=''
+			"height"= "300px",
+			"cachetime" = 30,
+			"users"='',
+			"tabs"=''
 		};
 
 		// SES Routes

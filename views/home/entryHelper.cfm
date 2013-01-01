@@ -10,34 +10,109 @@
     .fiddle-config {display:none;}
     .spaced {margin-left:20px !important;}
     .fiddle-config input[type=text] { width: 190px;}
+    .insertfiddle {border-top: solid 1px ##DADADA;margin: 0 -10px;padding: 0 10px;font-weight: bold;}
+    .insertfiddle img {margin-right:5px;margin-top:-2px;}
+    ##userfiddles {display:none;}
+    .panes_vertical {min-height: 800px;}
 </style>
 <!--- Custom Javascript --->
-<script type="text/javascript" src="#event.getModuleRoot('contentbox-admin')#/includes/js/contentbox.js"></script>
 <script type="text/javascript">
+    // define a format method so we can easily do 'my {0} is {1}'.format( 'content', 'awesome' );
+    String.prototype.format = function() {
+        var s = this,
+            i = arguments.length;
+    
+        while (i--) {
+            s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+        }
+        return s;
+    };
+    // set global variables for the JSON result from all user fiddles; cheaper than reloading remotely with every request
+    var FIDDLES = #serializeJSON( prc.settings.fiddles )#;
+    // setup listener for vertical nav
+    $("ul.vertical_nav").tabs("div.panes_vertical> div", {effect: 'fade'});
+    // setup listener for user selector
     $( '##userselect' ).change( function() {
+        $( '##userfiddles' ).show( 100 );
         getUserFiddles( this.value );
     })
+   
+    // setup listner for insert action
+    $( '.insert-fiddle' ).live( 'click', function() {
+        // get all inputs
+        var inputs = $( this ).parent().parent().find( 'input' );
+        prepareFiddle( inputs );
+    });
     
-    $( '.config-fiddle' ).live( 'click', function() {
-        $( this ).parent().next().slideToggle( 'fast' );
-    })
+    /*
+     * Insert a fiddle manually by providing the URL
+     */
+    function insertFiddleByURL( btn ) {
+        var inputs = $( btn ).parent().find( 'input' );
+        prepareFiddle( inputs );
+    } 
     
-    function getUserFiddles( user ) {
-        $.ajax({
-            type: 'get',
-            url: '#prc.xehEmbedCode#?user=' + user,
-            async: false,
-            success: function( data ) {
-                var fiddles = jQuery.parseJSON( data );
-                createFiddles( fiddles );
+    /*
+     * Common method to prepare fiddles for insertion...and insert them
+     * @inputs - collection of inputs
+     */
+    function prepareFiddle( inputs ) {
+        var vals = [],
+            tabs = [],
+            iframe = '';
+        inputs.each(function() {
+             if( this.type=='checkbox' ) {
+                if( this.checked ) {
+                    // add values to array
+                    tabs.push( this.value );
+                }
             }
-        });
+            else {
+                // add values to array
+                vals.push( this.value );  
+            }
+        })
+        if( vals[0]=='' ) {
+            alert( 'Please enter a URL!' );
+            return false;
+        }
+        // create double-mustache syntax
+        iframe += '{{fiddle style="height:{1};width:{2};" src="{0}embedded/{3}"}}'.format( vals[0], vals[1], vals[2], tabs.join( ',' ) );
+        // insert into editor
+        sendEditorText ( iframe );
     }
     
+    /*
+     * Simple matching method for user fiddles in global object
+     * @user {String} the user for which to search
+     */
+    function findUserFiddles( user ) {
+        for( var i in FIDDLES ) {
+            if( FIDDLES[ i ].user==user ) {
+                return FIDDLES[ i ].fiddles; 
+            }
+        }
+    }
+    
+    /*
+     * Main handler method for generting HTML from fiddle data
+     * @user {String} the user for which fiddle content is being created
+     */
+    function getUserFiddles( user ) {
+        var userfiddles = findUserFiddles( user );
+        createFiddles( jQuery.parseJSON( userfiddles ) );
+    }
+    
+    /*
+     * Basic HTML builder for fiddles
+     * @fiddles {Array} an array of user fiddles for which HTML should be created
+     */
     function createFiddles( fiddles ) {
         var fiddleContainer = $( '##userfiddles' )[0],
             fiddleHome = $( '##userfiddle-list' ),
             fiddleHTML = [];
+        // clear list
+        fiddleHome.empty();
         for( var i in fiddles ) {
             var fiddle = fiddles[ i ],
                 content = '';
@@ -58,30 +133,37 @@
                             '<tr>',
                                 '<td>',
                                     '<label>Height</label>',
-                                    '<input type="text" name="fiddle_height_' + i + '" value="#prc.settings.height#" />',
+                                    '<input type="hidden" name="fiddle_url" value="' + fiddle.url + '" />',
+                                    '<input type="text" name="fiddle_height" value="#prc.settings.height#" />',
                                 '</td>',
                                 '<td>',
                                     '<label>Width</label>',
-                                    '<input type="text" name="fiddle_width_' + i + '" value="#prc.settings.width#" />',
+                                    '<input type="text" name="fiddle_width" value="#prc.settings.width#" />',                             
                                 '</td>',
                             '</tr>',
                             '<tr>',
                                 '<td colspan="2">',
                                     '<label>Tabs to Include</label>',
-                                    '<input type="checkbox" name="fiddle_resource_' + i + '" value="js" /> JS',
-                                    '<input type="checkbox" name="fiddle_resource_' + i + '" value="resources" class="spaced" /> Resources',
-                                    '<input type="checkbox" name="fiddle_resource_' + i + '" value="css" class="spaced" /> CSS',
-                                    '<input type="checkbox" name="fiddle_resource_' + i + '" value="html" class="spaced" /> HTML',
-                                    '<input type="checkbox" name="fiddle_resource_' + i + '" value="result" class="spaced" /> Result',
+                                    '<input type="checkbox" name="fiddle_tabs" value="js" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS',
+                                    '<input type="checkbox" name="fiddle_tabs" value="resources" class="spaced" <cfif listContains( prc.settings.tabs, "resources" )>checked=true</cfif> /> Resources',
+                                    '<input type="checkbox" name="fiddle_tabs" value="css" class="spaced" <cfif listContains( prc.settings.tabs, "css" )>checked=true</cfif> /> CSS',
+                                    '<input type="checkbox" name="fiddle_tabs" value="html" class="spaced" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML',
+                                    '<input type="checkbox" name="fiddle_tabs" value="result" class="spaced" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result',
                                 '</td>',
                             '</tr>',
                         '</table>',
+                        '<div class="insertfiddle">',
+                            '<a href="javascript:void(0);" class="insert-fiddle"><img src="#event.getModuleRoot('jsFiddle')#/includes/add.png" height="12" />Insert Fiddle</a>',
+                        '</div>',
                     '</div>',
                 '</div>'
             ];
             fiddleHome.append( content.join( '' ) )
         }
-        //fiddleHome.append( fiddleHTML );
+        // setup listener for config toggles
+        $( '.config-fiddle' ).click( function() {
+            $( this ).parent().next().slideToggle( 300 );
+        })
     }
     
     function sendEditorText(text){

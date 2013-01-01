@@ -15,6 +15,7 @@
     }
     .jsfiddleuser span {font-weight:bold;}
     .jsfiddleuser img {margin:-1px 5px 0 0;cursor:pointer;}
+    .add_jsfiddleuser {cursor:pointer;}
     input[name=jsfiddleuser] {width:309px;}
 </style>
 <script type="text/javascript">
@@ -39,21 +40,33 @@ $(document).ready(function() {
     function addUser() {
         var fld = $( 'input[name=jsfiddleuser]' )[0],
             hiddenFld = $( 'input[name=users]' )[0],
-            users = hiddenFld.value.split( ',' ),
+            users = hiddenFld.value != '' ? hiddenFld.value.split( ',' ) : [],
             list = $( 'ul.jsfiddleusers' ),
             user='';
         // if a value is entered, add a new user
         if( fld.value != '' ) {
             // first, check if user already exists in list
             if( !userExists( fld.value, users ) ) {
-                // add user to array
-                users.push( fld.value );           
-                // put new value on setting field
-                hiddenFld.value = users.join( ',' );
-                // finally, add user to visual list with delete button
-                list.append( createLI( fld.value ) ); 
-                // clear fld value
-                fld.value = '';   
+                // now check that user has fiddles for jsfiddle.net
+                $.ajax({
+                    url: '#prc.xehCheckLink#?user=' + fld.value, 
+                    success: function( data ) {                                
+                        if( jQuery.trim( data )=='yes' ) {
+                            // add user to array
+                            users.push( fld.value );           
+                            // put new value on setting field
+                            hiddenFld.value = users.join( ',' );
+                            // finally, add user to visual list with delete button
+                            list.append( createLI( fld.value ) ); 
+                            // clear fld value
+                            fld.value = '';   
+                        }
+                        else {
+                            alert( 'Sorry, that user could not be found on http://jsfiddle.net' );
+                            return false;
+                        }
+                    }
+                });
             }
             else {
                 alert( 'Sorry, that user already exists.' );
