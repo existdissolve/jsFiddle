@@ -45,11 +45,11 @@
                                 #html.textField(name="height", label="Fiddle Height:", value="#prc.settings.height#", class="textfield width98", required="required")#
                                 #html.textField(name="width", label="Fiddle Width:", value="#prc.settings.width#", class="textfield width98", required="required")#
             					<label>Tabs to Include</label>
+                                <input type="checkbox" name="tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result
                                 <input type="checkbox" name="tabs" value="js" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS
                                 <input type="checkbox" name="tabs" value="resources" <cfif listContains( prc.settings.tabs, "resources" )>checked=true</cfif> /> Resources
                                 <input type="checkbox" name="tabs" value="css" <cfif listContains( prc.settings.tabs, "css" )>checked=true</cfif> /> CSS
                                 <input type="checkbox" name="tabs" value="html" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML
-                                <input type="checkbox" name="tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result
                             </div>
 						</fieldset>
                         <button class="button2" onclick="insertFiddleByURL( this );return false;"> Insert Fiddle </button>

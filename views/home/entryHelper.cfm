@@ -73,7 +73,7 @@
             return false;
         }
         // create double-mustache syntax
-        iframe += '<fiddle height="{2}" width="{3}" src="{0}" js="{4}" resources="{5}" css="{6}" html="{7}" result="{8}">jsFiddle - {1}</fiddle>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
+        iframe += '<fiddle height="{2}" width="{3}" src="{0}" result="{4}" js="{5}" resources="{6}" css="{7}" html="{8}" >jsFiddle - {1}</fiddle>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
         // insert into editor
         sendEditorText ( iframe );
     }
@@ -141,11 +141,12 @@
                             '<tr>',
                                 '<td colspan="2">',
                                     '<label>Tabs to Include</label>',
-                                    '<input type="checkbox" name="fiddle_tabs" value="js" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS',
+                                    '<input type="checkbox" name="fiddle_tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result',
+                                    '<input type="checkbox" name="fiddle_tabs" value="js" class="spaced" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS',
                                     '<input type="checkbox" name="fiddle_tabs" value="resources" class="spaced" <cfif listContains( prc.settings.tabs, "resources" )>checked=true</cfif> /> Resources',
                                     '<input type="checkbox" name="fiddle_tabs" value="css" class="spaced" <cfif listContains( prc.settings.tabs, "css" )>checked=true</cfif> /> CSS',
                                     '<input type="checkbox" name="fiddle_tabs" value="html" class="spaced" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML',
-                                    '<input type="checkbox" name="fiddle_tabs" value="result" class="spaced" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result',
+                                    
                                 '</td>',
                             '</tr>',
                         '</table>',

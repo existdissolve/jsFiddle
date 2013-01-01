@@ -147,6 +147,35 @@
                                         {
             								// Dialog window UI element: a text input field.
             								type : 'checkbox',
+            								id : 'result',
+            								// Text that labels the field.    								
+            								label : 'Result',
+            								// Function to be run when the setupContent method of the parent dialog window is called.
+            								// It can be used to initialize the value of the field.
+            								setup : function( element ) {
+                                                var checked = element.getAttribute( 'result' );
+                                                //this.setValue( element.getAttribute( 'html' ) );
+                                                if( checked=='true' ) {
+                                                    if( this.getInputElement().hasAttribute( 'checked' ) ) {
+                                                        this.getInputElement().setAttribute( 'checked', true );
+                                                    }
+                                                    else {
+                                                        this.getInputElement().$.checked = true;
+                                                    }
+                                                }
+                                                else {
+                                                    this.getInputElement().removeAttribute( 'checked' );
+                                                }
+            								},
+            								// Function to be run when the commitContent method of the parent dialog window is called.
+            								// Set the element's text content to the value of this field.
+            								commit : function( element ) {
+            									element.setAttribute( 'result', this.getValue( ) );
+            								}
+            							},              
+                                        {
+            								// Dialog window UI element: a text input field.
+            								type : 'checkbox',
             								id : 'js',
             								// Text that labels the field.    								
             								label : 'JS',
@@ -259,36 +288,7 @@
             								commit : function( element ) {
             									element.setAttribute( 'html', this.getValue( ) );
             								}
-            							},
-                                        {
-            								// Dialog window UI element: a text input field.
-            								type : 'checkbox',
-            								id : 'result',
-            								// Text that labels the field.    								
-            								label : 'Result',
-            								// Function to be run when the setupContent method of the parent dialog window is called.
-            								// It can be used to initialize the value of the field.
-            								setup : function( element ) {
-                                                var checked = element.getAttribute( 'result' );
-                                                //this.setValue( element.getAttribute( 'html' ) );
-                                                if( checked=='true' ) {
-                                                    if( this.getInputElement().hasAttribute( 'checked' ) ) {
-                                                        this.getInputElement().setAttribute( 'checked', true );
-                                                    }
-                                                    else {
-                                                        this.getInputElement().$.checked = true;
-                                                    }
-                                                }
-                                                else {
-                                                    this.getInputElement().removeAttribute( 'checked' );
-                                                }
-            								},
-            								// Function to be run when the commitContent method of the parent dialog window is called.
-            								// Set the element's text content to the value of this field.
-            								commit : function( element ) {
-            									element.setAttribute( 'result', this.getValue( ) );
-            								}
-            							}                   
+            							}   
                                     ]
                                 }
     						]

@@ -50,11 +50,11 @@
 					#html.textField(name="height", label="Default Fiddle Height:", value="#prc.settings.height#", class="textfield width98", required="required", default="300")#
 					#html.textField(name="cachetime", label="Cache Time (Days):", value="#prc.settings.cachetime#", class="textfield width98", required="required", default="5")#
 					<label>Tabs to Include</label>
+                    <input type="checkbox" name="tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result
                     <input type="checkbox" name="tabs" value="js" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS
                     <input type="checkbox" name="tabs" value="resources" <cfif listContains( prc.settings.tabs, "resources" )>checked=true</cfif> /> Resources
                     <input type="checkbox" name="tabs" value="css" <cfif listContains( prc.settings.tabs, "css" )>checked=true</cfif> /> CSS
-                    <input type="checkbox" name="tabs" value="html" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML
-                    <input type="checkbox" name="tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result
+                    <input type="checkbox" name="tabs" value="html" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML                    
 					#html.hiddenField(name="users", value="#prc.settings.users#")#
 					<label>jsFiddle Users:</label>
                    	<input type="text" class="textfield" name="jsfiddleuser" value="" />
