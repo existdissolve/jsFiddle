@@ -9,8 +9,10 @@
 		<div class="body_vertical_nav clearfix">
 			<!--- Navigation Bar --->
 			<ul class="vertical_nav">
+			    <cfif arrayLen( prc.settings.fiddles )>
 				<li class="active"><a href="##byuser"><img src="#prc.cbRoot#/includes/images/users_icon.png" height="16" alt="By User"/> User Fiddles</a></li>
-				<li><a href="##adhoc"><img src="#prc.cbRoot#/includes/images/world.png" alt="Ad-hoc"/> Fiddle By URL</a></li>
+				</cfif>
+                <li><a href="##adhoc"><img src="#prc.cbRoot#/includes/images/world.png" alt="Ad-hoc"/> Fiddle By URL</a></li>
 			</ul>
 			<div class="main_column">
 				<!-- Content area that wil show the form and stuff -->

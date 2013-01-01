@@ -16,7 +16,7 @@ component accessors="true"{
 		var jsFiddleURL = "http://jsfiddle.net/api/user/#arguments.user#/demo/list.json?limit=50";
 		var jsFiddleService = new HTTP(url=jsFiddleURL, method="get", resolveURL=true, timeout="10");
 		var results = jsFiddleService.send().getPrefix();
-		return results.filecontent;
+		return toString( results.filecontent );
 	}
 	
 	/**
