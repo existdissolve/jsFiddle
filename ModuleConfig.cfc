@@ -22,7 +22,7 @@ component {
 
 	function configure(){
 
-		// Compressor Settings
+		// module Settings
 		settings = {
 			// Developer Key
 			"width" = "100%",
