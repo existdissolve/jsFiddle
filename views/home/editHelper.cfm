@@ -1,9 +1,4 @@
 ﻿<cfoutput>
-<style>
-##remoteModelContent, ##quickPostContent, ##modalContent {
-    height: 95% !important;
-}   
-</style>
 <!--- Custom Javascript --->
 <script type="text/javascript">
     /*

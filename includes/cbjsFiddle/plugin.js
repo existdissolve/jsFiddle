@@ -21,7 +21,7 @@
                 resources: element.getAttribute( 'resources' ),
                 result: element.getAttribute( 'result' ),
                 editorName: editor.name
-            }, 400,450 );
+            });
 		}
 	};
 	//Section 2 : Create the button and add the functionality to it
