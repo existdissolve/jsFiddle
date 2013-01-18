@@ -5,7 +5,7 @@ component{
 	property name="cb" 				inject="cbHelper@cb";
 	property name="jsFiddle" 		inject="jsFiddle@jsFiddle";
 
-	function settings(event,rc,prc){
+	function settings( required Any event, required Struct rc, required Struct prc ){
 		// Exit handler
 		prc.xehSave = cb.buildModuleLink("jsFiddle","home.saveSettings");
 		prc.xehCheckLink = cb.buildModuleLink("jsFiddle","home.checkUserIsReal");
@@ -17,7 +17,7 @@ component{
 		event.setView("home/settings");
 	}
 
-	function saveSettings(event,rc,prc){
+	function saveSettings( required Any event, required Struct rc, required Struct prc ){
 		// Get jsfiddle settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
 
@@ -42,19 +42,19 @@ component{
 		cb.setNextModuleEvent("jsFiddle","home.settings");
 	}
 
-	function forceUpdateUserFiddles(event,rc,prc) {
+	function forceUpdateUserFiddles( required Any event, required Struct rc, required Struct prc ) {
 		// Get jsfiddle settings
 		prc.settings = getModuleSettings( "jsFiddle" ).settings;
 		jsFiddle.updateUserFiddles( users=listToArray( prc.settings.users ), forceUpdate=true );
         return 'yes';
 	}
 
-	function getFiddles(event,rc,prc){
+	function getFiddles( required Any event, required Struct rc, required Struct prc ){
 		event.paramValue("user","");
 		return jsFiddle.getFiddles(user=rc.user);
 	}
 	
-	function checkUserIsReal( event, rc, prc ) {
+	function checkUserIsReal(  required Any event, required Struct rc, required Struct prc  ) {
 		event.paramValue("user","");
 		var fiddles = jsFiddle.getUserFiddles( user=rc.user );
 		var mydata = isJSON( fiddles ) ? "yes" : "no";
@@ -63,7 +63,7 @@ component{
 		}
 	}
 	
-	function entry(event,rc,prc){
+	function entry( required Any event, required Struct rc, required Struct prc ){
 		// settings
 		prc.settings = getModuleSettings("jsFiddle").settings;
 		prc.settings.fiddles = jsFiddle.getAllUserFiddles();
@@ -74,4 +74,12 @@ component{
 			.setLayout(name="ajax", module="contentbox-admin");
 	}
 
+	function edit( required Any event, required Struct rc, required Struct prc ){
+		// settings
+		prc.settings = getModuleSettings("jsFiddle").settings;
+		prc.xehEmbedCode = cb.buildModuleLink("jsFiddle","home.getFiddles");
+		// view
+		event.setView(view="home/edit")
+			.setLayout(name="ajax", module="contentbox-admin");
+	}
 }
