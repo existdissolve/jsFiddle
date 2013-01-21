@@ -81,13 +81,9 @@
                 // listener for right-click on <fiddle> element (and only <fiddle> element)
     			editor.contextMenu.addListener( function( element ) {
     				// Get to the closest <fiddle> element that contains the selection.
-    				if ( element )
-    					element = element.getAscendant( 'fiddle', true );
-    				// Return a context menu object in an enabled, but not active state.
-    				if ( element && !element.isReadOnly() && !element.data( 'cke-realelement' ) )
-    		 			return { jsFiddleItem : CKEDITOR.TRISTATE_ON };
-    				// Return nothing if the conditions are not met.
-    		 		return null;
+                   if( element.getAscendant( 'div', true ) && element.getId()=='cbjsfiddle' ) {
+                       return { jsFiddleItem: CKEDITOR.TRISTATE_ON };
+                   }
     			});
 			}
 		}

@@ -20,8 +20,8 @@
             <div id="fiddlebyurl">
                 #html.textField(name="url", label="Fiddle URL:", class="textfield width98", required="required", value="#event.getValue( 'url' )#")#
                 #html.textField(name="title", label="Fiddle Title:", class="textfield width98", required="required", value="#event.getValue( 'title' )#")#
-                #html.textField(name="height", label="Fiddle Height:", value="#prc.settings.height#", class="textfield width98", required="required")#
-                #html.textField(name="width", label="Fiddle Width:", value="#prc.settings.width#", class="textfield width98", required="required")#
+                #html.textField(name="height", label="Fiddle Height:", value="#event.getValue( 'height' )#", class="textfield width98", required="required")#
+                #html.textField(name="width", label="Fiddle Width:", value="#event.getValue( 'width' )#", class="textfield width98", required="required")#
 				<label>Tabs to Include</label>
                 <input type="checkbox" name="tabs" value="result" <cfif event.getValue( "result" )>checked=true</cfif> /> Result
                 <input type="checkbox" name="tabs" value="js" <cfif event.getValue( "js" )>checked=true</cfif> /> JS
@@ -30,7 +30,7 @@
                 <input type="checkbox" name="tabs" value="html" <cfif event.getValue( "html" )>checked=true</cfif> /> HTML
             </div>
 		</fieldset>
-        <button class="button2" onclick="updateFiddle( this );return false;"> Update Fiddle </button>
+        <button class="button2" type="button" onclick="updateFiddle( this );return false;"> Update Fiddle </button>
 	</div> <!--- end main_column --->
 #html.endForm()#
 </div>

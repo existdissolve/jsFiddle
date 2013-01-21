@@ -26,7 +26,7 @@ component extends="coldbox.system.Interceptor"{
      */
 	function cb_onContentRendering( required any event, required struct interceptData ) {
 		// regex for fiddle tag syntax
-		var regex 	= "<fiddle\b[^>]*>(.*?)</fiddle>";
+		var regex 	= "<(div)\b([^>]*?)(cbjsfiddle)([^>]*?)>(.*?)</div>";
 		// get string builder
 		var builder = arguments.interceptData.builder;
 		// find regex matches 
