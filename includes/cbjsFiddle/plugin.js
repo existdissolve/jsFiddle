@@ -1,4 +1,6 @@
 ﻿(function(){
+    // hack for old IE versions
+	var fallbackSelection;
 	//Section 1 : Code to execute when the toolbar button is pressed
 	var a= {
 		exec:function( editor ){
@@ -10,6 +12,10 @@
 		exec:function( editor ){
             var selection = editor.getSelection(),
                 element = selection.getStartElement();
+            // if IE is confused about the current context, use fallback selection
+            if( element.getName()=='p' ) {
+            	element = fallbackSelection;
+            }
 			// Open the selector widget dialog.
 			openRemoteModal( getModuleURL('jsFiddle', 'Home.edit'), {
                 url: element.getAttribute( 'src' ),
@@ -83,6 +89,7 @@
     			editor.contextMenu.addListener( function( element ) {
     				// Get to the closest <fiddle> element that contains the selection.
                    if( element.getAscendant( 'div', true ) && element.getId()=='cbjsfiddle' ) {
+                       fallbackSelection = element;
                        return { jsFiddleItem: CKEDITOR.TRISTATE_OFF };
                    }
     			});

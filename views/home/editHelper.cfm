@@ -34,7 +34,7 @@
     
     function sendEditorText( vals ){
         var editor = $("###rc.editorName#").ckeditorGet(),
-            element = editor._.selectionPreviousPath.lastElement;
+            element = editor.getSelection().getStartElement();
         // update element attributes and text
         element.setAttribute( 'src', vals[ 0 ] );
         element.setAttribute( 'height', vals[ 2 ] );
