@@ -66,7 +66,7 @@
             return false;
         }
         // create double-mustache syntax
-        html += '<div id="cbjsfiddle" height="{2}" width="{3}" src="{0}" result="{4}" js="{5}" resources="{6}" css="{7}" html="{8}" >jsFiddle - {1}</fiddle>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
+        html += '<div id="cbjsfiddle" height="{2}" width="{3}" src="{0}" result="{4}" js="{5}" resources="{6}" css="{7}" html="{8}" >jsFiddle - {1}</div>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
         // insert into editor
         sendEditorText ( html );
     }
