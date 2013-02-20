@@ -88,7 +88,7 @@
                 // listener for right-click on <fiddle> element (and only <fiddle> element)
     			editor.contextMenu.addListener( function( element ) {
     				// Get to the closest <fiddle> element that contains the selection.
-                   if( element.getAscendant( 'div', true ) && element.getId()=='cbjsfiddle' ) {
+                   if( element.getAscendant( 'widget', true ) ) {
                        fallbackSelection = element;
                        return { jsFiddleItem: CKEDITOR.TRISTATE_OFF };
                    }

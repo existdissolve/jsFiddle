@@ -65,10 +65,21 @@
             alert( 'Please enter a URL!' );
             return false;
         }
-        // create double-mustache syntax
-        html += '<div id="cbjsfiddle" height="{2}" width="{3}" src="{0}" result="{4}" js="{5}" resources="{6}" css="{7}" html="{8}" >jsFiddle - {1}</div>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
+        // create new CKEditor element
+		var widget = new CKEDITOR.dom.element( 'widget' );
+		widget.setAttributes({
+			height: vals[ 2 ],
+			width: vals[ 3 ],
+			src: vals[ 0 ],
+			result: vals[ 4 ],
+			js: vals[ 5 ],
+			resources: vals[ 6 ],
+			css: vals[ 7 ],
+			html: vals[ 8 ]
+		});
+		widget.setText( 'jsFiddle - ' + vals[ 1 ] );
         // insert into editor
-        sendEditorText ( html );
+        sendEditorText ( widget );
     }
     
     /*
@@ -164,7 +175,7 @@
     }
     
     function sendEditorText(text){
-    	$("###rc.editorName#").ckeditorGet().insertElement( CKEDITOR.dom.element.createFromHtml( text ) );
+    	$("###rc.editorName#").ckeditorGet().insertElement( text );
     	closeRemoteModal();
     }
 </script>
