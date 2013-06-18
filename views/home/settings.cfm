@@ -42,13 +42,13 @@
 				You'll need a connection to the internet to use this module since it needs to make API calls to <em>http://jsfiddle.net</em>.
 			</p>
 
-			#html.startForm(action="cbadmin.module.jsFiddle.home.saveSettings",name="settingsForm")#
+			#html.startForm(action="cbadmin.module.jsFiddle.home.saveSettings",name="settingsForm",id="settingsForm",class="form-vertical")#
 
 				<fieldset>
-				<legend><img src="#prc.cbRoot#/includes/images/settings_black.png" alt="modifiers"/> <strong>Options</strong></legend>
-					#html.textField(name="width", label="Default Fiddle Width:", value="#prc.settings.width#", class="textfield width98", required="required", default="100%")#
-					#html.textField(name="height", label="Default Fiddle Height:", value="#prc.settings.height#", class="textfield width98", required="required", default="300")#
-					#html.textField(name="cachetime", label="Cache Time (Days):", value="#prc.settings.cachetime#", class="textfield width98", required="required", default="5")#
+				<legend><strong>Options</strong></legend>
+					#html.textField(name="width", label="Default Fiddle Width:", value="#prc.settings.width#",class="textfield",wrapper="div class=controls",labelClass="control-label",groupWrapper="div class=control-group", required="required", default="100%")#
+					#html.textField(name="height", label="Default Fiddle Height:", value="#prc.settings.height#",class="textfield",wrapper="div class=controls",labelClass="control-label",groupWrapper="div class=control-group", default="300")#
+					#html.textField(name="cachetime", label="Cache Time (Days):", value="#prc.settings.cachetime#",class="textfield",wrapper="div class=controls",labelClass="control-label",groupWrapper="div class=control-group", default="5")#
 					<label>Tabs to Include</label>
                     <input type="checkbox" name="tabs" value="result" <cfif listContains( prc.settings.tabs, "result" )>checked=true</cfif> /> Result
                     <input type="checkbox" name="tabs" value="js" <cfif listContains( prc.settings.tabs, "js" )>checked=true</cfif> /> JS
@@ -56,11 +56,15 @@
                     <input type="checkbox" name="tabs" value="css" <cfif listContains( prc.settings.tabs, "css" )>checked=true</cfif> /> CSS
                     <input type="checkbox" name="tabs" value="html" <cfif listContains( prc.settings.tabs, "html" )>checked=true</cfif> /> HTML                    
 					#html.hiddenField(name="users", value="#prc.settings.users#")#
-					<label>jsFiddle Users:</label>
-                   	<input type="text" class="textfield" name="jsfiddleuser" value="" />
-                    <div id="add-holder" style="display:inline;">
-                    	<img src="#event.getModuleRoot('jsFiddle')#/includes/add.png" class="add_jsfiddleuser" />
-                    </div>
+					<div class="control-group">
+						<div class="controls">
+							<label class="control-label">jsFiddle Users:</label>
+	                   		<input type="text" class="textfield" name="jsfiddleuser" value="" />
+	                   		<div id="add-holder" style="display:inline;">
+                    			<img src="#event.getModuleRoot('jsFiddle')#/includes/add.png" class="add_jsfiddleuser" />
+                    		</div>
+	                   	</div>
+	                </div>
                     <ul class="jsfiddleusers">
                     <cfif listLen( prc.settings.users )>
 						<cfloop list="#prc.settings.users#" index="user">
@@ -68,16 +72,14 @@
 						</cfloop>
 					</cfif>
 					</ul>
-                     <cfif listLen( prc.settings.users )>
-					 	<div class="holder">
-                   			#html.button(value="Update Cached Fiddles",class="button2",id="updatefiddles",title="Update cached fiddles for all users")#
-					 	</div>
-					 </cfif>
 				</fieldset>
 
 				<!--- Submit --->
-				<div class="actionBar center">
-					#html.submitButton(value="Save Settings",class="buttonred",title="Save the jsFiddle settings")#
+				<div class="form-actions">
+					<cfif listLen( prc.settings.users )>
+                   		#html.button(value="Update Cached Fiddles",class="btn",id="updatefiddles",title="Update cached fiddles for all users")#
+					</cfif>
+					#html.submitButton(value="Save Settings",class="btn btn-danger",title="Save the jsFiddle settings")#
 				</div>
 
 			#html.endForm()#

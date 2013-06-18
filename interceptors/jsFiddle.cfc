@@ -4,6 +4,7 @@ component extends="coldbox.system.Interceptor"{
 	* CKEditor Integrations
 	*/
 	function cbadmin_ckeditorExtraPlugins( required any event, required struct interceptData ){
+		// add jsfiddle icon to extraplugins config
 		arrayAppend( arguments.interceptData.extraPlugins, "cbjsFiddle" );
 	}
 
@@ -11,10 +12,12 @@ component extends="coldbox.system.Interceptor"{
 	* CKEditor Integrations
 	*/
 	function cbadmin_ckeditorToolbar( required any event, required struct interceptData ){
+		// toolbar items
 		var itemLen = arrayLen( arguments.interceptData.toolbar );
+		// loop over toolbar items
 		for( var x =1; x lte itemLen; x++ ){
-			if( isStruct( arguments.interceptData.toolbar[x] )
-			    AND arguments.interceptData.toolbar[x].name eq "contentbox" ){
+			// add jsfiddle plugin to contentbox group
+			if( isStruct( arguments.interceptData.toolbar[x] ) AND arguments.interceptData.toolbar[x].name eq "contentbox" ){
 				arrayAppend( arguments.interceptData.toolbar[x].items, "cbjsFiddle" );
 				break;
 			}

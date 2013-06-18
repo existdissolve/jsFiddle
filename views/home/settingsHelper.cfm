@@ -13,15 +13,16 @@
         color: ##fafafa;
         margin: 5px 1px;
     }
+    .jsfiddleusers {padding:0px !important;margin:0px !important;}
     .jsfiddleuser span {font-weight:bold;}
     .jsfiddleuser img {margin:-1px 5px 0 0;cursor:pointer;}
-    .add_jsfiddleuser {cursor:pointer;}
+    .add_jsfiddleuser {cursor:pointer;margin-top:-10px;}
     input[name=jsfiddleuser] {width:309px;}
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
 	// form validators
-	$("##settingsForm").validator();
+	$("##settingsForm").validate();
     $( 'img.add_jsfiddleuser' ).click( addUser );
     $( 'img.delete_jsfiddleuser' ).live( 'click', function(){
         removeUser( $( this ).next()[0].innerHTML );

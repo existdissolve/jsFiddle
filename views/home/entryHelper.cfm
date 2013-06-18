@@ -13,7 +13,6 @@
     .insertfiddle {border-top: solid 1px ##DADADA;margin: 0 -10px;padding: 0 10px;font-weight: bold;}
     .insertfiddle img {margin-right:5px;margin-top:-2px;}
     ##userfiddles {display:none;}
-    .panes_vertical {min-height: 800px;}
 </style>
 <!--- Custom Javascript --->
 <script type="text/javascript">
@@ -30,7 +29,7 @@
     // set global variables for the JSON result from all user fiddles; cheaper than reloading remotely with every request
     var FIDDLES = #serializeJSON( prc.settings.fiddles )#;
     // setup listener for vertical nav
-    $("ul.vertical_nav").tabs("div.panes_vertical> div", {effect: 'fade'});
+    //$("ul.vertical_nav").tabs("div.panes_vertical> div", {effect: 'fade'});
     // setup listener for user selector
     $( '##userselect' ).change( function() {
         $( '##userfiddles' ).show( 100 );
@@ -41,7 +40,7 @@
      * Insert a fiddle manually by providing the URL
      */
     function insertFiddleByURL( btn ) {
-        var inputs = $( btn ).parent().find( 'input' );
+        var inputs = $( btn ).parent().prev().find( 'input' );
         prepareFiddle( inputs );
     } 
     
@@ -65,21 +64,10 @@
             alert( 'Please enter a URL!' );
             return false;
         }
-        // create new CKEditor element
-		var widget = new CKEDITOR.dom.element( 'widget' );
-		widget.setAttributes({
-			height: vals[ 2 ],
-			width: vals[ 3 ],
-			src: vals[ 0 ],
-			result: vals[ 4 ],
-			js: vals[ 5 ],
-			resources: vals[ 6 ],
-			css: vals[ 7 ],
-			html: vals[ 8 ]
-		});
-		widget.setText( 'jsFiddle - ' + vals[ 1 ] );
+        // create double-mustache syntax
+        html += '<div id="cbjsfiddle" height="{2}" width="{3}" src="{0}" result="{4}" js="{5}" resources="{6}" css="{7}" html="{8}" >jsFiddle - {1}</div>'.format( vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8] );
         // insert into editor
-        sendEditorText ( widget );
+        sendEditorText ( html );
     }
     
     /*
@@ -174,8 +162,12 @@
         });
     }
     
-    function sendEditorText(text){
-    	$("###rc.editorName#").ckeditorGet().insertElement( text );
+    /**
+     * Main method for creating a new element in the CKEditor area
+     * @param {String} content Content to use to use to create the element
+     */
+    function sendEditorText( content ){
+    	$("###rc.editorName#").ckeditorGet().insertElement( CKEDITOR.dom.element.createFromHtml( content ) );
     	closeRemoteModal();
     }
 </script>

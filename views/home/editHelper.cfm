@@ -5,7 +5,7 @@
      * Update Fiddle
      */
     function updateFiddle( btn ) {
-        var inputs = $( btn ).parent().find( 'input' );
+        var inputs = $( btn ).parent().prev().find( 'input' );
         prepareFiddle( inputs );
     } 
     
@@ -32,6 +32,10 @@
         sendEditorText( vals );
     }
     
+    /**
+     * Main method for sending data back to CKEditor to update an existing element
+     * @param {Array} vals Array of values to update selected element with
+     */
     function sendEditorText( vals ){
         var editor = $("###rc.editorName#").ckeditorGet(),
             element = editor.getSelection().getStartElement();
@@ -45,6 +49,7 @@
         element.setAttribute( 'css', vals[ 7 ] );
         element.setAttribute( 'html', vals[ 8 ] );
         element.setText( vals[ 1 ] );
+        // close modal window
     	closeRemoteModal();
     }
 </script>
